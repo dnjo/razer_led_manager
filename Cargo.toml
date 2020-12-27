@@ -1,0 +1,5 @@
+[workspace]
+
+members = [
+    "razer_led_manager"
+]
