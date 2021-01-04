@@ -1,13 +1,13 @@
 use crate::effect::Effect;
 use crate::source::DeviceSource;
 
-pub struct DeviceManager<'a> {
+pub struct DeviceManager<T: DeviceSource> {
     devices: Vec<Device>,
-    source: &'a dyn DeviceSource,
+    source: T,
 }
 
-impl DeviceManager<'_> {
-    pub fn new(source: &dyn DeviceSource) -> DeviceManager {
+impl<T: DeviceSource> DeviceManager<T> {
+    pub fn new(source: T) -> DeviceManager<T> {
         DeviceManager {
             devices: devices(),
             source,
@@ -21,8 +21,8 @@ impl DeviceManager<'_> {
             .find(|d| d.identifier == device_identifier)
             .unwrap();
         // TODO: Check if effect is supported
-        let source = self.source
-            .find()
+        let source_devices = self.source.find();
+        let source = source_devices
             .iter()
             .find(|s| s.product_id == device.product_id)
             .unwrap();
